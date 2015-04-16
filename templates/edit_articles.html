@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="ukrgadget" />
+  <meta name="description" content="ukrgadget.com - Издание о современной технике." />
+  <meta name="google-site-verification" content="9ILLdLPkGCsnylY2DebaEjBQ25bPVSK6tK8JyhFI-KI" />
+  <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css" />
+  <script type="text/javascript" src="/static/js/bootstrap.js" charset="utf-8"></script>
+  <link rel="start" href="http://ukrgadget.com/" title="Home" />
+  <title>ukrgadget.com - Издание о современной технике</title>
+  <!-- jQuery and jQuery UI -->
+  <script src="/static/js/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/static/js/jquery-ui-1.8.13.custom.min.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="/static/css/smoothness/jquery-ui-1.8.13.custom.css" type="text/css" media="screen" charset="utf-8">
+
+  <!-- elRTE -->
+  <script src="/static/js/elrte.min.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="/static/css/elrte.min.css" type="text/css" media="screen" charset="utf-8">
+
+  <!-- elRTE translation messages -->
+  <script src="/static/js/i18n/elrte.ru.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    $().ready(function() {
+      var opts = {
+        cssClass : 'el-rte',
+        // lang     : 'ru',
+        height   : 250,
+        toolbar  : 'complete',
+        cssfiles : ['/static/css/elrte-inner.css']
+      }
+      $('#editor').elrte(opts);
+      $('#editor2').elrte(opts);
+      $('#dp1').datepicker();
+    })
+  </script>
+
+  <style type="text/css" media="screen">
+    body { padding:20px;}
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+     <div class="row-fluid">
+     <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Ukrgadget</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/admin">Админ панель</a></li>
+              <li><a href="/admin/list/">Список материалов</a></li>
+              <li class="active"><a href="/admin/new/">Новая запись</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    <div class="row-fluid" style="margin-top: 40px;">
+    <div class="span12">
+    <!--Sidebar content-->
+            <form action="/admin/edit/" method="POST">
+            {% autoescape None %}{{ xsrf_input }}
+            <legend>Добавление нового материала:</legend>
+            <label><input type="text" placeholder="Заполните заголовок" name="title" value="{{ title }}"></label>
+            {% if error == True %}
+            <div class="control-group error">
+              <div class="controls">
+                <input type="text" placeholder="uri-идентификатор" name="uri" value="{{ slug_name }}" id="inputError">
+                <span class="help-inline">Это имя должно быть уникальным.</span>
+              </div>
+            </div>
+            {% else %}
+            <label><input type="text" placeholder="uri-идентификатор" name="uri" value="{{ slug_name }}"></label>
+            {% end %}
+            <label><textarea id="editor" rows="5" placeholder="Укороченная версия метариала" name="content">{{ content }}</textarea></label>
+            <label><textarea id="editor2" rows="5" placeholder="Полный текст метариала" name="morecontent">{{ morecontent }}</textarea></label>
+            <label><div class="input-prepend">
+              <span class="add-on">@</span><input class="span2" id="prependedInput" size="16" type="text" placeholder="Username" name="name" value="{{ author }}">
+            </div></Label>
+            <label><div class="input-prepend">
+               <span class="add-on"><i class="icon-th"></i></span>
+               <input id="dp1" class="span2" size="16" type="text" value="{{ pub_date }}" name="pub_date">
+             </div></label>
+             <label><input class="input-xlarge" id="disabledInput" type="text" value=" {{ rfc822_date }} " disabled><span class="help-inline">Дата публикации в формате RFC</span></label>
+            <label><input class="input-xlarge" id="disabledInput" type="text" value=" {{ posted }} " disabled><span class="help-inline">Статус публикации</span></label>
+            <label><input class="input-xlarge" id="disabledInput" type="text" value=" {{ twit }} " disabled><span class="help-inline">Статус твитта</span></label>
+            <label><input class="input-xlarge" type="text" value=" {{ ident_form }} " name="ident_form"><span class="help-inline">Идентификатор в базе данных</span></label>
+            <label><input class="input-xxlarge" id="disabledInput" type="text" name="short_url" value=" {{ short_url }} " disabled><span class="help-inline">Короткий адрес</span></label>
+            <label><input class="input-xxlarge" id="disabledInput" type="text" name="absolute_url" value=" {{ absolute_url }} " disabled><span class="help-inline">Полный адрес</span></label>
+            <label><input type="text" name="category" value="{{ category }}"><span class="help-inline">Ввести название вручную.</span></label>
+            <label><input type="text" name="tags" value="{{ tags }}"><span class="help-inline">Список тегов вводить с использованием разделителя ","</span></label>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="reset" class="btn">Cancel</button>
+            </form>
+    </div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>

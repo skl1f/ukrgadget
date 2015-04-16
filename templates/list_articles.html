@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="ukrgadget" />
+  <meta name="description" content="ukrgadget.com - Издание о современной технике." />
+  <meta name="google-site-verification" content="9ILLdLPkGCsnylY2DebaEjBQ25bPVSK6tK8JyhFI-KI" />
+  <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css" />
+  <script type="text/javascript" src="/static/js/bootstrap.js" charset="utf-8"></script>
+  <link rel="start" href="http://ukrgadget.com/" title="Home" />
+  <title>ukrgadget.com - Издание о современной технике</title>
+  <style type="text/css" media="screen">
+    body { padding:20px;}
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+     <div class="row-fluid">
+     <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Ukrgadget</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/admin">Админ панель</a></li>
+              <li class="active"><a href="/admin/list/">Список материалов</a></li>
+              <li><a href="/admin/new/">Новая запись</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    <div class="row-fluid" style="margin-top: 40px;">
+      <div class="span12">
+      <!--Body content-->
+      {% autoescape None %}
+      <table class="table table-condensed">
+         <thead>
+          <tr>
+            <th>Заголовок</th>
+            <th>Категория</th>
+            <th>Дата публикации</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+        {% block article %}
+        {% if article['posted'] %}
+          <tr class="success">
+            <td><a href="/admin/edit/{{ article['_id'] }}">{{ article['title'] }}</a></td>
+            <td>{{ article['category'] }}</td>
+            <td>{{ article['pub_date'] }}</td>
+            {% if article['twit'] %}
+            <td> 
+              <a href="/admin/delete/{{ article['_id'] }}" class="btn btn-mini btn-danger">Удалить</a>
+            </tr>
+            {% else %}
+            <td> 
+              <a href="/admin/twit/{{ article['_id'] }}" class="btn btn-mini btn-primary">Твитнуть</a>
+              <a href="/admin/delete/{{ article['_id'] }}" class="btn btn-mini btn-danger">Удалить</a>
+            </td>
+            </tr>
+            {% end %}
+          </tr>
+        {% else %}
+          <tr class="info">
+            <td><a href="/admin/edit/{{ article['_id'] }}">{{ article['title'] }}</a></td>
+            <td>{{ article['category'] }}</td>
+            <td>{{ article['pub_date'] }}</td>
+            <td>
+              <a href="/admin/post/{{ article['_id'] }}" class="btn btn-mini btn-primary">Опубликовать</a>
+              <a href="/admin/delete/{{ article['_id'] }}" class="btn btn-mini btn-danger">Удалить</a>
+            </td>
+            </tr>
+        {% end %}
+        {% end %}
+        {% end %}
+        <tbody>
+      </table>
+      {% if paginator %}
+      <div class="pagination pagination-centered">
+        <ul>
+          {% if page == 1 %}
+          <li class="previous disabled"><a href="#">&larr; Older</a></li>
+          {% else %}
+          <li class="previous"><a href="{{ page-1 }}">&larr; Older</a></li>
+          {% end %}
+          {% for pag in paginator %}
+          {% if pag == page %}
+          <li class="active"><a href="{{ page }}">{{ page }}</a></li>
+          {% elif pag == page %}
+          <li class="active"><a href="page">{{ pag }}</a></li>
+          {% else %}
+          <li><a href="{{ pag }}">{{ pag }}</a></li>
+          {% end %}
+          {% end %}
+          {% if page == paginator[-1] %}
+          <li class="next disabled"><a href="#">Newer &rarr;</a></li>
+          {% else %}
+          <li class="next"><a href="{{ page+1 }}">Newer &rarr;</a></li>
+          {% end %}
+        </ul>
+      </div>
+      {% end %}
+      </div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>
